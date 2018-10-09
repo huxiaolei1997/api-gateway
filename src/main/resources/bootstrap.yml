@@ -33,11 +33,27 @@ hystrix:
 # 自定义路由
 # zuul:
 #    routes:
-#      myProduct:
+#      myProduct: # 这里的命名不一定和 path 中的 myProduct 相同，可以任意指定
 #        path: /myProduct/**
 #        serviceId: product
+# 简洁配置，和上面的效果一样
+# zuul:
+#    routes:
+#       product: /myProduct/**
 # 访问地址从localhost:8087/product/product/list
 # 变为
 # localhost:8087/myProduct/product/list
+# 禁止某个url被外部访问，只能服务间调用
+# zuul:
+#   ignored-patterns:
+#     - /product/product/listForOrder
+#     - /myProduct/product/listForOrder
+# 或者这样写
+# zuul:
+#   ignored-patterns:
+#     - /**/product/listForOrder
+# 这样配置我们就不能通过 localhost:8087/product/product/listForOrder
+# 或者
+# localhost:8087/myProduct/product/listForOrder 来访问这个 url 了
 # 查看所有可以访问的服务url
 # localhost:8087/application/routes 暂时访问不了，不知道为什么
