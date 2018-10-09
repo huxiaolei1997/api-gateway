@@ -1,0 +1,43 @@
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    config:
+      discovery:
+        enabled: true
+        service-id: CONFIG
+      profile: dev
+eureka:
+  client:
+    service-url:
+      defaultZone: http://server1:8761/eureka
+zuul:
+  host:
+    connect-timeout-millis: 60000
+    socket-timeout-millis: 60000
+ribbon:
+  ReadTimeout: 60000
+  ConnectTimeout: 60000
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 60000
+# 如果的时候出现 Hystrix ReadTimeOut，需要配置 Zuul 超时时间
+# https://cloud.spring.io/spring-cloud-static/Finchley.SR1/multi/multi__router_and_filter_zuul.html#_zuul_timeouts
+# server.port=8087
+# 访问 product 服务下的 product/list 接口
+# 这样访问 localhost:8087/product/product/list
+# 自定义路由
+# zuul:
+#    routes:
+#      myProduct:
+#        path: /myProduct/**
+#        serviceId: product
+# 访问地址从localhost:8087/product/product/list
+# 变为
+# localhost:8087/myProduct/product/list
+# 查看所有可以访问的服务url
+# localhost:8087/application/routes 暂时访问不了，不知道为什么
